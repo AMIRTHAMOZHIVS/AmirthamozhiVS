@@ -1,5 +1,72 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { motion } from "framer-motion";
+import * as THREE from "three";
+
+function ParticleVortex() {
+  const pointsRef = useRef();
+  const count = 380;
+  
+  // Track continuous mouse position vector coordinates
+  const mouse = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      // Normalize values between -1 and 1
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  const positions = React.useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
+      const radius = THREE.MathUtils.randFloat(1.5, 5.5);
+      pos[i * 3] = Math.cos(theta) * radius;
+      pos[i * 3 + 1] = THREE.MathUtils.randFloat(-3, 3);
+      pos[i * 3 + 2] = Math.sin(theta) * radius;
+    }
+    return pos;
+  }, []);
+
+  useFrame((state) => {
+    const time = state.clock.getElapsedTime();
+    
+    // Default rotation loop
+    pointsRef.current.rotation.y = time * 0.12;
+    pointsRef.current.rotation.x = Math.sin(time * 0.05) * 0.1;
+
+    // OPTION 3: Interactive mouse influence vector calculation
+    // Gently lag/interpolate target points toward mouse coordinate offsets
+    pointsRef.current.position.x += (mouse.current.x * 0.5 - pointsRef.current.position.x) * 0.05;
+    pointsRef.current.position.y += (mouse.current.y * 0.5 - pointsRef.current.position.y) * 0.05;
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+          count={count}
+          array={positions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        color="#818cf8"
+        size={0.065}
+        sizeAttenuation={true}
+        transparent
+        opacity={0.75}
+        blending={THREE.AdditiveBlending}
+      />
+    </points>
+  );
+}
 
 export default function SplashScreen({ finishLoading }) {
   useEffect(() => {
@@ -7,93 +74,65 @@ export default function SplashScreen({ finishLoading }) {
     return () => clearTimeout(timeout);
   }, [finishLoading]);
 
-  const containerVariants = {
-    animate: {
-      transition: {
-        staggerChildren: 0.5, 
-      },
-    },
-  };
-
-  const childVariants = {
-    initial: { y: 40, opacity: 0 },
-    animate: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
-    }
-  };
-
   return (
     <motion.div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 999,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#030303", 
-        color: "#ffffff"
-      }}
+      className="splash-wrapper"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
-      <motion.div 
-        variants={containerVariants}
-        initial="initial"
-        animate="animate"
-        style={{ textAlign: "center", padding: "0 2rem" }}
-      >
-        <div style={{ overflow: "hidden", marginBottom: "0.75rem" }}>
-          <motion.p
-            variants={childVariants}
-            style={{
-              fontFamily: "'Courier New', Courier, monospace",
-              color: "#a5b4fc", 
-              fontSize: "clamp(0.95rem, 2.5vw, 1.25rem)",
-              letterSpacing: "0.35em",
-              textTransform: "uppercase",
-              fontWeight: "600",
-              margin: 0
-            }}
-          >
-            SYSTEM.INIT // WELCOME
-          </motion.p>
+      <div className="splash-3d-container">
+        <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
+          <ambientLight intensity={0.5} />
+          <ParticleVortex />
+        </Canvas>
+      </div>
+
+      <div className="splash-ui-overlay">
+        <motion.p
+          initial={{ opacity: 0, letterSpacing: "0.1em" }}
+          animate={{ opacity: 1, letterSpacing: "0.35em" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="splash-subtitle"
+        >
+          CORE.CORE_INIT // MATRIX INFRASTRUCTURE
+        </motion.p>
+
+        <div className="splash-headline-mask" style={{ display: "flex", justifyContent: "center", gap: "0.15em" }}>
+          {"AMIRTHAMOZHI V S".split("").map((letter, index) => (
+            <motion.span
+              key={index}
+              initial={{ y: "110%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                delay: 0.3 + index * 0.04,
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              style={{
+                display: "inline-block",
+                fontSize: "clamp(1.8rem, 6vw, 3.5rem)",
+                fontWeight: "900",
+                letterSpacing: "-0.01em",
+                color: "#ffffff",
+                textTransform: "uppercase",
+                whiteSpace: letter === " " ? "pre" : "normal"
+              }}
+            >
+              {letter}
+            </motion.span>
+          ))}
         </div>
 
-        <div style={{ overflow: "hidden" }}>
-          <motion.h1
-            variants={childVariants}
-            style={{
-              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-              fontSize: "clamp(1.8rem, 6vw, 3.8rem)",
-              fontWeight: "900",
-              letterSpacing: "-0.03em",
-              color: "#ffffff",
-              margin: 0,
-              textTransform: "uppercase"
-            }}
-          >
-            AMIRTHAMOZHI V S
-          </motion.h1>
+        <div className="splash-hud-loader">
+          <motion.div 
+            className="splash-hud-fill"
+            initial={{ width: "0%" }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 3.8, ease: "easeInOut" }}
+          />
         </div>
-
-        <motion.div 
-          style={{
-            height: "2px",
-            background: "linear-gradient(to right, transparent, #818cf8, transparent)",
-            marginTop: "24px",
-            marginLeft: "auto",
-            marginRight: "auto"
-          }}
-          initial={{ width: 0 }}
-          animate={{ width: "160px" }}
-          transition={{ delay: 1.2, duration: 0.8, ease: "easeInOut" }}
-        />
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

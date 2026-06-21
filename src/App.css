@@ -23,6 +23,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* --- SCROLL PROGRESS INDICATOR BAR --- */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #818cf8, #c084fc);
+  transform-origin: 0%;
+  z-index: 999;
+}
+
 /* --- NAVIGATION LAYOUT --- */
 .nav-bar {
   display: flex;
@@ -30,7 +42,7 @@ body {
   align-items: center;
   padding: 1.25rem 4rem;
   position: fixed;
-  top: 0;
+  top: 4px; /* Slight offset to leave room for the scroll line */
   left: 0;
   right: 0;
   background-color: rgba(3, 3, 3, 0.8);
@@ -64,6 +76,23 @@ body {
 
 .nav-links a:hover {
   color: var(--text-main);
+}
+
+.nav-links .nav-resume-btn {
+  color: var(--accent-color) !important;
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  background-color: rgba(129, 140, 248, 0.05);
+  font-family: monospace;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.nav-links .nav-resume-btn:hover {
+  background-color: var(--accent-color);
+  color: #ffffff !important;
+  border-color: var(--accent-color);
 }
 
 .nav-links .nav-cta {
@@ -128,7 +157,6 @@ body {
   margin: 0 0 2.5rem 0;
 }
 
-/* --- RE-ENGINEERED ICON SYSTEM --- */
 .social-icons-row {
   display: flex;
   gap: 1.25rem;
@@ -155,7 +183,7 @@ body {
   background-color: #171722;
 }
 
-/* --- FIXED CIRCULAR HEADSHOT SPECIFICATION --- */
+/* --- CIRCULAR PORTRAIT HEADSHOT --- */
 .hero-image-block {
   display: flex;
   justify-content: center;
@@ -190,7 +218,7 @@ body {
 
 @keyframes spin { 100% { transform: rotate(300deg); } }
 
-/* --- RE-ENGINEERED COMPONENT SKILLS GRID --- */
+/* --- TECHNICAL CAPABILITIES MATRIX --- */
 .skills-section {
   background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
@@ -243,7 +271,6 @@ body {
   padding-left: 0.75rem;
 }
 
-/* Critical Fix: Chips wrapper must flex-wrap instead of single-stringing */
 .skills-chip-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -267,7 +294,7 @@ body {
   background-color: var(--bg-primary);
 }
 
-/* --- SELECTED PROJECT GRID --- */
+/* --- PROJECTS AREA --- */
 .showcase-section {
   border-top: 1px solid var(--border-color);
   padding: 6rem 2rem;
@@ -350,7 +377,7 @@ body {
   color: var(--accent-color);
 }
 
-/* --- EDUCATION TIMELINE FORMATS --- */
+/* --- EDUCATION PROFILE ITEMS --- */
 .edu-item {
   margin-bottom: 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
@@ -432,6 +459,25 @@ body {
   transform: scale(1.02);
 }
 
+.footer-resume-btn {
+  display: inline-block;
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.2s ease;
+}
+
+.footer-resume-btn:hover {
+  border-color: var(--accent-color);
+  background-color: rgba(129, 140, 248, 0.05);
+  transform: scale(1.02);
+}
+
 .footer-bottom-meta {
   margin-top: 8rem;
   display: flex;
@@ -446,7 +492,7 @@ body {
   font-family: monospace;
 }
 
-/* --- COMPRESSION OVERLAY SESSIONS PRIVATE CHETS --- */
+/* --- PRIVATE CHAT WIDGET LAYOUT --- */
 .chat-widget-wrapper {
   position: fixed;
   bottom: 2rem;
@@ -539,53 +585,130 @@ body {
 .chat-input-form input:focus { outline: none; border-color: var(--accent-color); }
 .chat-input-form button { background-color: var(--text-main); color: var(--bg-primary); border: none; padding: 0 1.25rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
 
-/* --- CRITICAL MEDIA INTERPOLATION PACKET FOR FULL RESPONSIVENESS --- */
+/* --- RESPONSIVE MEDIA INTERPOLATION BREAKS --- */
 @media (max-width: 900px) {
   .nav-bar { padding: 1.25rem 2rem; }
-  .nav-links { display: none; } /* Kept off on mobile to prevent clutter */
+  .nav-links { display: none; }
   .hero-section { padding-top: 8rem; min-height: auto; }
   .hero-split-layout { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
   .status-badge { display: inline-block; margin: 0 auto 1.5rem auto; }
   .social-icons-row { justify-content: center; }
-  .hero-image-block { order: -1; } /* Photo on top for mobile screens */
+  .hero-image-block { order: -1; }
   .profile-image-container { width: 180px; height: 180px; }
   .projects-grid { grid-template-columns: 1fr; }
   .footer-bottom-meta { flex-direction: column; gap: 1rem; text-align: center; }
 }
-/* --- RESUME DOWNLOAD BUTTON STYLES --- */
+/* --- THREE.JS SPLASH VIEWPORT LAYOUT --- */
+.splash-wrapper {
+  position: fixed;
+  inset: 0;
+  background-color: #020205;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 
-.nav-links .nav-resume-btn {
-  color: var(--accent-color) !important;
-  border: 1px solid rgba(129, 140, 248, 0.3);
-  padding: 0.4rem 1rem;
-  border-radius: 8px;
-  background-color: rgba(129, 140, 248, 0.05);
+.splash-3d-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none; /* Allows click-through interaction layers if necessary */
+}
+
+.splash-ui-overlay {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 2rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.splash-subtitle {
   font-family: monospace;
+  color: #a5b4fc;
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
   font-weight: 600;
-  transition: all 0.2s ease;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 0 12px rgba(129, 140, 248, 0.3);
 }
 
-.nav-links .nav-resume-btn:hover {
-  background-color: var(--accent-color);
-  color: #ffffff !important;
-  border-color: var(--accent-color);
+.splash-headline-mask {
+  overflow: hidden;
+  margin-bottom: 2rem;
 }
 
-.footer-resume-btn {
-  display: inline-block;
-  background-color: transparent;
+.splash-title {
+  font-size: clamp(1.8rem, 6vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
   color: #ffffff;
-  border: 1px solid var(--border-color);
-  padding: 1rem 2.5rem;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.05rem;
-  transition: all 0.2s ease;
+  margin: 0;
+  text-transform: uppercase;
 }
 
-.footer-resume-btn:hover {
-  border-color: var(--accent-color);
-  background-color: rgba(129, 140, 248, 0.05);
-  transform: scale(1.02);
+.splash-hud-loader {
+  width: 140px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 0 auto;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.splash-hud-fill {
+  height: 100%;
+  background: linear-gradient(to right, #818cf8, #c084fc);
+  box-shadow: 0 0 8px #818cf8;
+}
+/* --- OPTION 4: LIVE METRICS SYSTEM STYLE LAYOUT --- */
+.system-metrics-ribbon {
+  position: absolute;
+  bottom: -22px;
+  left: 0;
+  right: 0;
+  background-color: #07070c;
+  border-bottom: 1px solid rgba(129, 140, 248, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
+  padding: 0.2rem 2rem;
+  overflow: hidden;
+  display: flex;
+}
+
+.metrics-scroll-wrapper {
+  display: flex;
+  gap: 3rem;
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #71717a;
+  letter-spacing: 0.05em;
+  animation: scrollMetrics 35s linear infinite;
+  width: 100%;
+}
+
+.metrics-scroll-wrapper span {
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.metrics-scroll-wrapper span:hover {
+  color: var(--accent-color);
+}
+
+@keyframes scrollMetrics {
+  0% { transform: translateX(0%); }
+  50% { transform: translateX(-25%); }
+  100% { transform: translateX(0%); }
+}
+
+/* Offset hero section padding slightly so it doesn't overlap the new metric ribbon */
+.hero-section {
+  padding-top: 9rem !important;
 }
