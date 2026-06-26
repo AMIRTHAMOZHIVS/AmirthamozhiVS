@@ -105,7 +105,7 @@ export default function SplashScreen({ finishLoading }) {
               initial={{ y: "110%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: 0.3 + index * 0.04,
+                delay: 0.4 + index * 0.04,
                 duration: 0.8,
                 ease: [0.16, 1, 0.3, 1]
               }}
