@@ -314,7 +314,7 @@ export default function App() {
                       <a href={project.link} target="_blank" rel="noreferrer" className="project-link">
                         Explore Codebase <span>→</span>
                       </a>
-                    </div>
+                   // </div>
                   </div>
                 ))}
               </div>
