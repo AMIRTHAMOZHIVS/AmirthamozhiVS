@@ -82,6 +82,13 @@ const SKILLS = [
 ];
 
 const PROJECTS = [
+   {
+    title: "CodeSentinel",
+    category: "PR Analyzer",
+    tags: ["MERN", "Github/Auth", "Python","API integration"],
+    description: "Developed an PR Analyzer",
+    link: "https://github.com/AMIRTHAMOZHIVS/CodeSentinel-AI"
+  }
   {
     title: "CampusCare",
     category: "Complaint Management System",
@@ -95,14 +102,8 @@ const PROJECTS = [
     tags: ["React.js", "Node.js", "Express.js", "MongoDB"],
     description: "Built an e-commerce ecosystem integrating secure session registration modules, custom login pathways, dynamic catalog product searches, and optimized cart layout state updates.",
     link: "https://github.com/AMIRTHAMOZHIVS/Next_cart"
-  },
-  {
-    title: "CPU Scheduling Simulator",
-    category: "Operating Systems Visualization",
-    tags: ["HTML", "CSS", "JavaScript"],
-    description: "Engineered an operational browser layout tool displaying complex CPU priority execution metrics. Renders fully interactive Gantt Charts alongside calculated waiting and turnaround performance matrix structures.",
-    link: "https://github.com/AMIRTHAMOZHIVS/CPU_SCHEDULING"
   }
+ 
 ];
 
 const EDUCATION_CERTIFICATIONS = {
